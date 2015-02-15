@@ -138,11 +138,7 @@ update() {
     echo >&2 "Applying changes to names..."
     cat "modifications-$YESTERDAY.txt" | cut -f1 | while read ID; do
         mysql --login-path=$CONFIG_NAME -Bse "DELETE FROM geo_geoname WHERE id = $ID" $DB_NAME
-        exit
     done
-
-    mysql --login-path=$CONFIG_NAME --local-infile=1 -Bse "LOAD DATA LOCAL INFILE 'modifications-$YESTERDAY.txt' INTO TABLE geo_geoname CHARACTER SET 'utf8'" $DB_NAME
-    exit
 
     echo >&2 "Deleting old alternate names..."
     cat "alternateNamesDeletes-$YESTERDAY.txt" | cut -f1 | while read ID; do
