@@ -17,14 +17,15 @@ importer.sh [OPTIONS] <action>
 
 Where **\<action\>** can be one of the following:
 
+* `config` --- register database parameters (mysql user's password will be prompted to save the file)
 * `init` --- initializes local MySQL database
 * `import` --- downloads geonames data and imports them into local database
 * `update` --- updates database (usually should run daily by cron)
+* `empty`--- empty tables
 
 Options are:
 
 * `-u <user>` --- username to access database
-* `-p <password>` --- user password to access database
 * `-h <host>` --- MySQL server address (default: `localhost`)
 * `-r <port>` --- MySQL server port (default: `3306`)
 * `-n <database>` --- MySQL database name (default: `geonames`)
@@ -33,22 +34,36 @@ Options are:
 Examples
 --------
 
-Tp create local database `geonames`:
+To register database parameters;
 
 ```sh
-importer.sh -u root -p ROOT_PASSWORD init
+importer.sh -u geonames -h localhost config
+Enter password: secret
+```
+
+To create local database `geonames`:
+
+```sh
+importer.sh init
 ```
 
 To import geonames data into local `geonames` database:
 
 ```sh
-importer.sh -u geouser -p GEOUSER_PASSWORD import
+importer.sh import
 ```
 
 To apply yesterday's changes in geonames.org to local database `geonames`:
 
 ```sh
-importer.sh -u geouser -p GEOUSER_PASSWORD update
+importer.sh update
+```
+
+
+To flush all geonames tables into local database:
+
+```sh
+importer.sh empty
 ```
 
 
