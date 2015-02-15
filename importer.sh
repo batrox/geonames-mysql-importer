@@ -95,10 +95,10 @@ import() {
     done
 
     echo >&2 "Importing geonames into database $DB_NAME..."
-    mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD --local-infile=1 $DB_NAME < ../../sql/import.sql
+    mysql --login-path=$CONFIG_NAME --local-infile=1 $DB_NAME < ../../sql/import.sql
 
     echo >&2 "Adding indexes on the tables in database $DB_NAME..."
-    mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD $DB_NAME < ../../sql/add_indexes.sql
+    mysql --login-path=$CONFIG_NAME $DB_NAME < ../../sql/add_indexes.sql
 
     echo >&2 "Done"
     cd ..
@@ -108,7 +108,7 @@ import() {
 
 empty() {
     echo "Emptying tables"
-    mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD $DB_NAME < sql/truncate_tables.sql
+    mysql --login-path=$CONFIG_NAME $DB_NAME < sql/truncate_tables.sql
 
 }
 
@@ -132,29 +132,29 @@ update() {
 
     echo >&2 "Deleting old names..."
     cat "deletes-$YESTERDAY.txt" | cut -f1 | while read ID; do
-        mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD -Bse "DELETE FROM geo_geoname WHERE id = $ID" $DB_NAME
+        mysql --login-path=$CONFIG_NAME -Bse "DELETE FROM geo_geoname WHERE id = $ID" $DB_NAME
     done
 
     echo >&2 "Applying changes to names..."
     cat "modifications-$YESTERDAY.txt" | cut -f1 | while read ID; do
-        mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD -Bse "DELETE FROM geo_geoname WHERE id = $ID" $DB_NAME
+        mysql --login-path=$CONFIG_NAME -Bse "DELETE FROM geo_geoname WHERE id = $ID" $DB_NAME
         exit
     done
 
-    mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD --local-infile=1 -Bse "LOAD DATA LOCAL INFILE 'modifications-$YESTERDAY.txt' INTO TABLE geo_geoname CHARACTER SET 'utf8'" $DB_NAME
+    mysql --login-path=$CONFIG_NAME --local-infile=1 -Bse "LOAD DATA LOCAL INFILE 'modifications-$YESTERDAY.txt' INTO TABLE geo_geoname CHARACTER SET 'utf8'" $DB_NAME
     exit
 
     echo >&2 "Deleting old alternate names..."
     cat "alternateNamesDeletes-$YESTERDAY.txt" | cut -f1 | while read ID; do
-        mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD -Bse "DELETE FROM geo_alternate_name WHERE id = $ID" $DB_NAME
+        mysql  --login-path=$CONFIG_NAME -Bse "DELETE FROM geo_alternate_name WHERE id = $ID" $DB_NAME
     done
 
     echo >&2 "Applying changes to alternate names..."
     cat "alternateNamesModifications-$YESTERDAY.txt" | cut -f1 | while read ID; do
-        mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD -Bse "DELETE FROM geo_alternate_name WHERE id = $ID" $DB_NAME
+        mysql  --login-path=$CONFIG_NAME -Bse "DELETE FROM geo_alternate_name WHERE id = $ID" $DB_NAME
     done
 
-    mysql -h$DB_HOST -P$DB_PORT -u$DB_USERNAME -p$DB_PASSWORD --local-infile=1 -Bse "LOAD DATA LOCAL INFILE 'alternateNamesModifications-$YESTERDAY.txt' INTO TABLE geo_alternate_name CHARACTER SET 'utf8'" $DB_NAME
+    mysql  --login-path=$CONFIG_NAME --local-infile=1 -Bse "LOAD DATA LOCAL INFILE 'alternateNamesModifications-$YESTERDAY.txt' INTO TABLE geo_alternate_name CHARACTER SET 'utf8'" $DB_NAME
 
     echo >&2 "Done"
     cd ..
