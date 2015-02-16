@@ -23,7 +23,7 @@ Where **\<action\>** can be one of the following:
 * `update` --- updates database (usually should run daily by cron)
 * `empty`--- empty tables
 
-Options are:
+Config options are:
 
 * `-u <user>` --- username to access database
 * `-h <host>` --- MySQL server address (default: `localhost`)
@@ -34,8 +34,6 @@ Options are:
 Examples
 --------
 
-To register database parameters;
-
 ```sh
 importer.sh -u geonames -h localhost config
 Enter password: secret
@@ -44,7 +42,7 @@ Enter password: secret
 To create local database `geonames`:
 
 ```sh
-importer.sh init
+importer.sh -u root -p ROOT_PASSWORD init
 ```
 
 To import geonames data into local `geonames` database:

@@ -4,8 +4,8 @@
 
 DB_HOST="localhost"
 DB_PORT=3306
-DB_NAME="geonames"
-
+DB_NAME="geo_geonames"
+DB_USERNAME="root"
 CONFIG_NAME="geonames-mysql-importer"
 
 BASE_URL="http://download.geonames.org/export/dump"
@@ -58,22 +58,21 @@ config() {
 }
 
 init() {
-
-    if checkConfig; then
-        echo "You have to call 'config' action first to register database parameters"
-        exit
-    fi
-
     echo >&2 "Creating database $DB_NAME..."
-    mysql --login-path=$CONFIG_NAME -Bse "DROP DATABASE IF EXISTS $DB_NAME;"
-    mysql --login-path=$CONFIG_NAME -Bse "CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8;"
-    mysql --login-path=$CONFIG_NAME $DB_NAME < sql/db_schema.sql
+    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -Bse "DROP DATABASE IF EXISTS $DB_NAME;"
+    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -Bse "CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8;"
+    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" $DB_NAME < sql/db_schema.sql
 
     echo >&2 "Done"
     exit 0
 }
 
 import() {
+    if checkConfig; then
+        echo "You have to call 'config' action first to register database parameters"
+        exit
+    fi
+
     FILES_TO_DOWNLOAD="admin1CodesASCII.txt admin2Codes.txt allCountries.zip alternateNames.zip countryInfo.txt featureCodes_en.txt hierarchy.zip timeZones.txt"
     FILES_TO_UNZIP="allCountries.zip alternateNames.zip hierarchy.zip"
 
@@ -107,12 +106,21 @@ import() {
 }
 
 empty() {
+    if checkConfig; then
+        echo "You have to call 'config' action first to register database parameters"
+        exit
+    fi
+
     echo "Emptying tables"
     mysql --login-path=$CONFIG_NAME $DB_NAME < sql/truncate_tables.sql
 
 }
 
 update() {
+    if checkConfig; then
+        echo "You have to call 'config' action first to register database parameters"
+        exit
+    fi
 
     case $(uname) in
         Darwin|FreeBSD|NetBSD|DragonFLy) YESTERDAY=`date -v -1d +"%Y-%m-%d"` ;;
