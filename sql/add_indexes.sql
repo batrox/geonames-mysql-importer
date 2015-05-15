@@ -41,3 +41,11 @@ CALL CREATE_INDEX_IF_NOT_EXISTS('geo_hierarchy', 'child_id', 'child_id');
 CALL CREATE_INDEX_IF_NOT_EXISTS('geo_language', 'code', 'code');
 
 CALL CREATE_INDEX_IF_NOT_EXISTS('geo_timezone', 'country_code', 'country_code');
+
+ALTER TABLE `geo_geoname` ADD INDEX `nameAndCountry` (`name`, `country`) COMMENT '';
+ALTER TABLE `geo_geoname` ADD INDEX `nameAsciiAndCountry` (`name_ascii`, `country`) COMMENT '';
+
+ALTER TABLE `geo_geoname` ADD INDEX `admin1AndCountry` (`admin1`, `country`) COMMENT '';
+ALTER TABLE `geo_geoname` ADD INDEX `admin2AndCountry` (`admin2`, `country`) COMMENT '';
+ALTER TABLE `geo_geoname` ADD INDEX `admin3AndCountry` (`admin3`, `country`) COMMENT '';
+

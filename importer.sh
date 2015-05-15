@@ -30,7 +30,7 @@ usage() {
     exit 1
 }
 
-function checkConfig {
+checkConfig() {
     if [[ -n $(mysql_config_editor print --login-path=$CONFIG_NAME) ]]; then
         return 1;
     fi
