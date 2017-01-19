@@ -59,9 +59,9 @@ config() {
 
 init() {
     echo >&2 "Creating database $DB_NAME..."
-    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -Bse "DROP DATABASE IF EXISTS $DB_NAME;"
-    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -Bse "CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8;"
-    mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" $DB_NAME < sql/db_schema.sql
+    mysql --login-path=$CONFIG_NAME -Bse "DROP DATABASE IF EXISTS $DB_NAME;"
+    mysql --login-path=$CONFIG_NAME -Bse "CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8;"
+    mysql --login-path=$CONFIG_NAME $DB_NAME < sql/db_schema.sql
 
     echo >&2 "Done"
     exit 0
