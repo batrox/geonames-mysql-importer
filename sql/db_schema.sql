@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS geo_geoname (
     timezone        VARCHAR(100)    COMMENT 'the timezone id, see geo_timezone table',
     mod_date        DATE            COMMENT 'date of last modification in yyyy-MM-dd format',
     PRIMARY KEY (id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_alternate_name (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS geo_alternate_name (
     is_colloquial       BOOLEAN,
     is_historic         BOOLEAN,
     PRIMARY KEY (id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_country (
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS geo_country (
     equivalent_fips_code    CHAR(10)        COMMENT 'Additional FIPS code',
     geoname_id              INT,
     PRIMARY KEY (code)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_language (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS geo_language (
     iso_639_2       VARCHAR(50)     COMMENT 'ISO 639-2 code',
     name            VARCHAR(200),
     PRIMARY KEY (iso_639_3)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE geo_admin1 (
@@ -74,7 +74,7 @@ CREATE TABLE geo_admin1 (
     name_ascii  TEXT,
     geoname_id  INT,
     PRIMARY KEY (code, geoname_id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_admin2 (
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS geo_admin2 (
     name_ascii  TEXT,
     geoname_id  INT,
     PRIMARY KEY (code, geoname_id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_hierarchy (
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS geo_hierarchy (
     child_id        INT,
     feature_code    VARCHAR(50)                     COMMENT 'see http://www.geonames.org/export/codes.html',
     PRIMARY KEY (id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_feature (
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS geo_feature (
     name        VARCHAR(200),
     description TEXT,
     PRIMARY KEY (code)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_timezone (
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS geo_timezone (
     dst_offset      DECIMAL(3, 1)   COMMENT 'DST offset to gmt on 1st of July (of the current year)',
     raw_offset      DECIMAL(3, 1)   COMMENT 'Raw offset without DST',
     PRIMARY KEY (id)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS geo_continent (
@@ -118,4 +118,4 @@ CREATE TABLE IF NOT EXISTS geo_continent (
     name        VARCHAR(20),
     geoname_id  INT,
     PRIMARY KEY (code)
-) CHARACTER SET utf8;
+) CHARACTER SET utf8mb4;
